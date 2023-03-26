@@ -1,52 +1,33 @@
 import React from 'react';
-import {Text, Box} from 'native-base';
-import {formatCurrency} from '../utils/formatCurrency';
-import useHome from '../components/useHome';
+import {Avatar, Card, Text} from 'react-native-paper';
 import AddRegister from '../components/AddRegister';
+import useHome from '../components/useHome';
+import {formatCurrency} from '../utils/formatCurrency';
 
 const Home = () => {
   const {summaryAccount} = useHome();
 
   return (
-    <Box>
-      <Box
-        p={4}
-        m={2}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        shadow={2}
-        borderWidth={0}
-        _dark={{
-          borderColor: 'coolGray.600',
-          backgroundColor: 'gray.700',
-        }}
-        _light={{
-          backgroundColor: 'gray.50',
-        }}>
-        <Text fontSize="3xl" bold>
-          Welcome Rose
+    <Card style={{margin: 10}}>
+      <Card.Title
+        title="Welcome Rose"
+        subtitle="This is your summary"
+        left={props => <Avatar.Icon {...props} icon="wallet-outline" />}
+        titleVariant="titleLarge"
+      />
+      <Card.Content style={{marginVertical: 20}}>
+        <Text variant="titleLarge">
+          Total: {formatCurrency(summaryAccount.total)}
         </Text>
-        <Text fontSize="lg">This is your summary</Text>
-        <Text mt={6} mb={2} fontSize="3xl">
-          <Text bold>{formatCurrency(summaryAccount.total)}</Text>
+        <Text variant="bodyMedium">
+          Income: {formatCurrency(summaryAccount.income)}
         </Text>
-        <Text mb={2} fontSize="lg">
-          <Text bold color="green.500">
-            Income:
-          </Text>{' '}
-          {formatCurrency(summaryAccount.income)}
+        <Text variant="bodyMedium">
+          Outcome: -{formatCurrency(summaryAccount.outcome)}
         </Text>
-        <Text mb={5} fontSize="lg">
-          <Text bold color="red.500">
-            Outcome:
-          </Text>{' '}
-          -{formatCurrency(summaryAccount.outcome)}
-        </Text>
-      </Box>
-
+      </Card.Content>
       <AddRegister />
-    </Box>
+    </Card>
   );
 };
 

@@ -1,21 +1,19 @@
-import {useEffect, useState} from 'react';
-import {useToast} from 'native-base';
 import {addDoc, collection} from 'firebase/firestore';
+import {useEffect, useState} from 'react';
 import {database} from '../config/fb';
-import AlertBase from './AlertBase';
 import {setIsNewRegister} from '../context/Actions';
 import {useAppContext} from '../context/Provider';
+import {useAlertBase} from './AlertBase';
 
 const DEFAUlT_FORM = {
   concept: '',
   date: new Date(),
   owner: 'Rosa Morales',
-  type: '',
+  type: 'egreso',
   value: 0,
 };
 
 const useNewRegister = () => {
-  const toast = useToast();
   const {state, dispatch} = useAppContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [form, setForm] = useState(DEFAUlT_FORM);
@@ -49,23 +47,10 @@ const useNewRegister = () => {
     addDoc(collection(database, 'accounts'), form)
       .then(() => {
         _cleanForm();
-        toast.show({
-          render: () => {
-            return <AlertBase text="Add register succesfully" />;
-          },
-        });
+        useAlertBase('Add register succesfully');
       })
       .catch(() => {
-        toast.show({
-          render: () => {
-            return (
-              <AlertBase
-                text="Error, please contact with ADMIN"
-                status="error"
-              />
-            );
-          },
-        });
+        useAlertBase('Error, please contact with ADMIN');
       });
   };
 

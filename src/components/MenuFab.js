@@ -1,55 +1,56 @@
-import {Actionsheet, Fab, useDisclose} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
-import {useAppContext} from '../context/Provider';
-import Icon from 'react-native-vector-icons/dist/AntDesign';
+import {useState} from 'react';
+import {FAB} from 'react-native-paper';
 import {setIsNewRegister} from '../context/Actions';
+import {useAppContext} from '../context/Provider';
 
 const MenuFab = () => {
   const navigation = useNavigation();
   const {dispatch} = useAppContext();
-  const {isOpen, onOpen, onClose} = useDisclose();
 
   const changeNavigation = route => {
     navigation.navigate(route);
-    onClose();
   };
 
   const openModalToNew = () => {
     dispatch(setIsNewRegister(true));
-    onClose();
   };
 
-  return (
-    <>
-      <Actionsheet isOpen={isOpen} onClose={onClose}>
-        <Actionsheet.Content>
-          <Actionsheet.Item
-            startIcon={Icon.HomeOutlined}
-            onPress={() => changeNavigation('Home')}>
-            Home
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            startIcon={Icon.ArrowsAltOutlined}
-            onPress={() => changeNavigation('DetailAccount')}>
-            Detail
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            startIcon={Icon.AppstoreAddOutlined}
-            onPress={openModalToNew}>
-            Add Value
-          </Actionsheet.Item>
-        </Actionsheet.Content>
-      </Actionsheet>
+  const [state, setState] = useState({open: false});
 
-      <Fab
-        placement="bottom-right"
-        shadow={2}
-        size="sm"
-        icon={Icon.AppstoreAddOutlined}
-        onPress={onOpen}
-        bg="#407088"
-      />
-    </>
+  const onStateChange = ({open}) => setState({open});
+
+  const {open} = state;
+
+  return (
+    <FAB.Group
+      open={open}
+      visible
+      icon={open ? 'close' : 'plus'}
+      actions={[
+        {
+          icon: 'plus',
+          label: 'Add Register',
+          onPress: () => openModalToNew(),
+        },
+        {
+          icon: 'wallet',
+          label: 'Detail',
+          onPress: () => changeNavigation('DetailRegisters'),
+        },
+        {
+          icon: 'home',
+          label: 'Home',
+          onPress: () => changeNavigation('Home'),
+        },
+      ]}
+      onStateChange={onStateChange}
+      onPress={() => {
+        if (open) {
+          // do something if the speed dial is open
+        }
+      }}
+    />
   );
 };
 

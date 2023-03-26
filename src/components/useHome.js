@@ -27,7 +27,22 @@ const useHome = () => {
       return count;
     };
 
-    const total = _sumNumbers(state.account);
+    const _totalAccount = arrays => {
+      let count = 0;
+      if (arrays.length > 0) {
+        arrays.forEach(element => {
+          if (element.type === 'ingreso') {
+            count += parseInt(element.value);
+          } else {
+            count -= parseInt(element.value);
+          }
+        });
+      }
+
+      return count;
+    };
+
+    const total = _totalAccount(state.account);
     const income = _sumNumbers(state.account.filter(e => e.type === 'ingreso'));
     const outcome = _sumNumbers(state.account.filter(e => e.type === 'egreso'));
 
