@@ -1,19 +1,30 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Provider as PaperProvider} from 'react-native-paper';
+import CustomNavigationBar from './src/components/CustomNavigationBar';
 import DetailRegisters from './src/components/DetailRegisters';
 import MenuFab from './src/components/MenuFab';
-import {Provider} from './src/context/Provider';
+import {CombinedDarkTheme, CombinedDefaultTheme} from './src/components/Themes';
+import {useAppContext} from './src/context/Provider';
 import Home from './src/pages/Home';
 
 function App() {
+  const {state} = useAppContext();
   const Stack = createNativeStackNavigator();
 
   return (
-    <Provider>
-      <NavigationContainer>
+    <PaperProvider
+      theme={
+        state.toggleThemeDefault ? CombinedDefaultTheme : CombinedDarkTheme
+      }>
+      <NavigationContainer
+        theme={
+          state.toggleThemeDefault ? CombinedDefaultTheme : CombinedDarkTheme
+        }>
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{
+            header: props => <CustomNavigationBar {...props} />,
             headerStyle: {
               backgroundColor: '#424874',
               textAlign: 'center',
@@ -33,7 +44,7 @@ function App() {
         </Stack.Navigator>
         <MenuFab />
       </NavigationContainer>
-    </Provider>
+    </PaperProvider>
   );
 }
 

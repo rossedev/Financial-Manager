@@ -1,12 +1,13 @@
-import {createContext, useContext, useMemo, useReducer, useEffect} from 'react';
 import {collection, onSnapshot, query} from 'firebase/firestore';
-import {Reducer} from './Reducer';
+import {createContext, useContext, useEffect, useMemo, useReducer} from 'react';
 import {database} from '../config/fb';
 import {setAccountAction} from './Actions';
+import {Reducer} from './Reducer';
 
 const initialState = {
   account: [],
   isNewRegister: false,
+  toggleThemeDefault: true,
 };
 
 export const Context = createContext({

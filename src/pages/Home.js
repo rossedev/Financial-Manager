@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Avatar, Card, Text} from 'react-native-paper';
 import AddRegister from '../components/AddRegister';
@@ -6,9 +7,12 @@ import {formatCurrency} from '../utils/formatCurrency';
 
 const Home = () => {
   const {summaryAccount} = useHome();
+  const navigation = useNavigation();
 
   return (
-    <Card style={{margin: 10}}>
+    <Card
+      style={{margin: 10}}
+      onPress={() => navigation.navigate('DetailRegisters')}>
       <Card.Title
         title="Welcome Rose"
         subtitle="This is your summary"

@@ -2,12 +2,14 @@ import moment from 'moment';
 import React from 'react';
 import {ScrollView} from 'react-native';
 import {Button, Card, Chip, Text} from 'react-native-paper';
+import {useAppContext} from '../context/Provider';
 import {formatCurrency} from '../utils/formatCurrency';
 import EditRegister from './EditRegister';
 import RemoveRegister from './RemoveRegister';
 import useDetailRegisters from './useDetailRegisters';
 
 const DetailRegisters = () => {
+  const {state} = useAppContext();
   const {
     infoRemove,
     formEdit,
@@ -52,7 +54,9 @@ const DetailRegisters = () => {
                     theme={{
                       colors: {
                         primary: 'white',
-                        secondaryContainer: '#86efac',
+                        secondaryContainer: state.toggleThemeDefault
+                          ? '#86efac'
+                          : '#4ade80',
                         onSecondaryContainer: 'white',
                       },
                     }}
@@ -65,7 +69,9 @@ const DetailRegisters = () => {
                     theme={{
                       colors: {
                         primary: 'white',
-                        secondaryContainer: '#fca5a5',
+                        secondaryContainer: state.toggleThemeDefault
+                          ? '#fca5a5'
+                          : '#f87171',
                         onSecondaryContainer: 'white',
                       },
                     }}>
