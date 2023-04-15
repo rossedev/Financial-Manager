@@ -3,6 +3,7 @@ import moment from 'moment';
 import {useEffect, useState} from 'react';
 import {database} from '../config/fb';
 import {useAppContext} from '../context/Provider';
+import {dayInDate, monthInDate} from '../utils/date';
 import {useAlertBase} from './AlertBase';
 
 const useDetailRegisters = () => {
@@ -60,11 +61,55 @@ const useDetailRegisters = () => {
     onCloseRemoveModal();
   };
 
-  const searchToName = valueInSearch => {
-    const filter = state.account.filter(e =>
-      e?.concept?.toLowerCase().includes(valueInSearch.toLowerCase()),
+  const searchToFilters = filters => {
+    let countFilters = [...state.account];
+
+    if (filters['search']) {
+      countFilters = search(countFilters, filters['search']);
+    }
+
+    if (filters['onlyIncome']) {
+      countFilters = typeAccount(countFilters, 'ingreso');
+    }
+
+    if (filters['onlyOutcome']) {
+      countFilters = typeAccount(countFilters, 'egreso');
+    }
+
+    if (filters['thisMonth']) {
+      countFilters = isThisMonthAccount(countFilters);
+    }
+
+    if (filters['thisDay']) {
+      countFilters = isThisDayAccount(countFilters);
+    }
+
+    setNewAccount(countFilters);
+  };
+
+  const search = (accoutWithFilter, search) => {
+    return accoutWithFilter.filter(account =>
+      account?.concept?.toLowerCase().includes(search.toLowerCase()),
     );
-    setNewAccount(filter);
+  };
+
+  const typeAccount = (accoutWithFilter, type) => {
+    return accoutWithFilter.filter(account => account?.type === type);
+  };
+
+  const isThisMonthAccount = accoutWithFilter => {
+    const currentMonth = monthInDate();
+
+    return accoutWithFilter.filter(
+      account => monthInDate(account?.date) === currentMonth,
+    );
+  };
+
+  const isThisDayAccount = accoutWithFilter => {
+    const currentMonth = dayInDate();
+    return accoutWithFilter.filter(
+      account => dayInDate(account?.date) === currentMonth,
+    );
   };
 
   const filterCurrenly = value => {
@@ -92,7 +137,7 @@ const useDetailRegisters = () => {
     onClickEdit,
     onCloseEditModal,
     onCloseRemoveModal,
-    searchToName,
+    searchToFilters,
   };
 };
 

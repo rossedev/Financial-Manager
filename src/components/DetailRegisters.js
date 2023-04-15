@@ -5,6 +5,7 @@ import {Button, Card, Chip, Text} from 'react-native-paper';
 import {useAppContext} from '../context/Provider';
 import {formatCurrency} from '../utils/formatCurrency';
 import EditRegister from './EditRegister';
+import FiltersDetailRegister from './FiltersDetailRegister';
 import RemoveRegister from './RemoveRegister';
 import useDetailRegisters from './useDetailRegisters';
 
@@ -23,7 +24,7 @@ const DetailRegisters = () => {
     onClickEdit,
     onCloseEditModal,
     onCloseRemoveModal,
-    searchToName,
+    searchToFilters,
     filterCurrenly,
   } = useDetailRegisters();
 
@@ -43,6 +44,8 @@ const DetailRegisters = () => {
         onCloseRemoveModal={onCloseRemoveModal}
         submitRemove={submitRemove}
       />
+
+      <FiltersDetailRegister searchToFilters={searchToFilters} />
 
       <ScrollView>
         {newAccount.map((item, index) => (

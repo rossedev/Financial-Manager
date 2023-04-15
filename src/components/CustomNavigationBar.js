@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getHeaderTitle} from '@react-navigation/elements';
+import {useEffect} from 'react';
 import {Appbar, Switch} from 'react-native-paper';
 import {setToggleThemeDefault} from '../context/Actions';
 import {useAppContext} from '../context/Provider';
@@ -12,7 +14,17 @@ export default function CustomNavigationBar({
   const {state, dispatch} = useAppContext();
   const title = getHeaderTitle(options, route.name);
 
+  useEffect(() => {
+    getToggleThemeSaved();
+  }, []);
+
+  const getToggleThemeSaved = async () => {
+    const hasThemeSaved = await AsyncStorage.getItem('theme');
+    dispatch(setToggleThemeDefault(JSON.parse(hasThemeSaved)));
+  };
+
   const toggleTheme = () => {
+    AsyncStorage.setItem('theme', `${!state.toggleThemeDefault}`);
     dispatch(setToggleThemeDefault(!state.toggleThemeDefault));
   };
 
